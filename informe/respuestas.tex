@@ -172,6 +172,25 @@ Reconstruyan la imagen a partir de $\tilde{b}$ con $\lambda = 10^{-2.5}$ y muest
 
 \seccion{(a) Derivada de la sigmoide}
 
+Calculamos la derivada de $\sigma(t)$ usando la regla del cociente:
+\begin{align*}
+  \sigma'(t) &= \frac{d}{dt}\left(\frac{1}{1 + e^{-t}}\right)
+    = \frac{\frac{d}{dt}(1) \cdot (1 + e^{-t}) - (1) \cdot \frac{d}{dt}(1 + e^{-t})}{(1 + e^{-t})^2} \\[4pt]
+  &= \frac{(0)(1 + e^{-t}) - (1) \cdot \left(\frac{d}{dt}(1) + \frac{d}{dt}(e^{-t})\right)}{(1 + e^{-t})^2} \\[4pt]
+  &= \frac{(-1) \cdot \left(0 + e^{-t} \cdot \frac{d}{dt}(-t)\right)}{(1 + e^{-t})^2} \\[4pt]
+  &= \frac{(-1) \cdot \left(e^{-t} \cdot (-1)\right)}{(1 + e^{-t})^2}
+    = \frac{e^{-t}}{(1 + e^{-t})^2}.
+\end{align*}
+Sumando y restando 1 en el numerador, se obtiene
+\begin{align*}
+  \sigma'(t) &= \frac{1 + e^{-t} - 1}{(1 + e^{-t})^2}
+    = \frac{1 + e^{-t}}{(1 + e^{-t})^2} - \frac{1}{(1 + e^{-t})^2} \\[4pt]
+  &= \frac{1}{1 + e^{-t}} - \frac{1}{(1 + e^{-t})^2}
+    = \frac{1}{1 + e^{-t}} \left(1 - \frac{1}{1 + e^{-t}}\right) \\[4pt]
+  &= \sigma(t) \, (1 - \sigma(t)).
+\end{align*}
+
+% Falta: deducir que 0 < sigma'(t) <= 1/4 para todo t y en qué punto se alcanza el máximo.
 \pendiente
 
 \seccion{(b) Función de pérdida y su gradiente}
