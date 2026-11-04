@@ -181,13 +181,48 @@ Calculamos la derivada de $\sigma(t)$ usando la regla del cociente:
   &= \frac{(-1) \cdot \left(e^{-t} \cdot (-1)\right)}{(1 + e^{-t})^2}
     = \frac{e^{-t}}{(1 + e^{-t})^2}.
 \end{align*}
-Sumando y restando 1 en el numerador, se obtiene
+Sumando y restando 1 en el numerador, se obtiene:
 \begin{align*}
   \sigma'(t) &= \frac{1 + e^{-t} - 1}{(1 + e^{-t})^2}
     = \frac{1 + e^{-t}}{(1 + e^{-t})^2} - \frac{1}{(1 + e^{-t})^2} \\[4pt]
   &= \frac{1}{1 + e^{-t}} - \frac{1}{(1 + e^{-t})^2}
     = \frac{1}{1 + e^{-t}} \left(1 - \frac{1}{1 + e^{-t}}\right) \\[4pt]
   &= \sigma(t) \, (1 - \sigma(t)).
+\end{align*}
+Dado que la función sigmoide se define como:
+\begin{align*}
+\sigma(t) = \frac{1}{1 + e^{-t}}
+\end{align*}
+se cumple $e^{-t} > 0$ para todo $t \in \mathbb{R}$, lo cual implica que:
+\begin{align*}
+0 < \sigma(t) < 1, \quad \forall t \in \mathbb{R}
+\end{align*}
+A partir de $\sigma'(t) = \sigma(t)(1 - \sigma(t))$, deducimos directamente que:
+\begin{align*}
+\sigma'(t) > 0 \quad \forall t \in \mathbb{R}
+\end{align*}
+Necesitamos encontrar el valor máximo de $\sigma'(t)$, tal que realizaremos el cambio de variable $u = \sigma(t) \in (0,1)$ y definiremos la función:
+\begin{align*}
+g(u) = u(1 - u) = u - u^2
+\end{align*}
+Derivando $g(u)$ con respecto a $u$ e igualando a cero para encontrar sus puntos críticos:
+\begin{align*}
+g'(u) = 1 - 2u = 0 \implies u = \frac{1}{2}
+\end{align*}
+Dado que la segunda derivada de $g(u)$ es $g''(u) = -2 < 0$, el punto $u = 1/2$ corresponde a un máximo global en el intervalo $(0,1)$. Evaluando $g(u)$ en este punto:
+\begin{align*}
+g\left(\frac{1}{2}\right) = \frac{1}{2}\left(1 - \frac{1}{2}\right) = \frac{1}{4}
+\end{align*}
+Por lo tanto, se concluye que:
+\begin{align*}
+0 < \sigma'(t) \le \frac{1}{4} \quad \forall t \in \mathbb{R}
+\end{align*}
+Luego, el valor máximo de $\sigma'(t)$ se alcanza cuando $\sigma(t) = \frac{1}{2}$. Resolviendo para $t$:
+\begin{align*}
+\sigma(t) = \frac{1}{1 + e^{-t}} = \frac{1}{2} \implies 1 + e^{-t} = 2 \implies e^{-t} = 1 \implies t = 0
+\end{align*}
+Así, la derivada $\sigma'$ alcanza su máximo global en $t = 0$, tal que $\sigma'(0) = \frac{1}{4}$.
+
 \end{align*}
 
 % Falta: deducir que 0 < sigma'(t) <= 1/4 para todo t y en qué punto se alcanza el máximo.
