@@ -1,0 +1,20 @@
+# Sistema y editores
+.DS_Store
+.vscode/
+
+# LaTeX: archivos auxiliares
+*.aux
+*.log
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+
+# Jupyter y Python
+.ipynb_checkpoints/
+__pycache__/
+.venv/
+
+# Exportaciones de los notebooks
+notebooks/*.html
