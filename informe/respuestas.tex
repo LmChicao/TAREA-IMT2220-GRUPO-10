@@ -66,110 +66,6 @@ Algunas recomendaciones
 \problema{Reconstrucción de una imagen}
 % =====================================================================
 
-\seccion{(a) Mínimos cuadrados}
-
-\begin{enumerate}[label=\roman*., widest=iii]
-  \item \textbf{Gradiente y matriz Hessiana de $J_0$.}
-
-  \pendiente
-
-  \item \textbf{$H_{J_0}$ es semidefinida positiva y todo punto crítico es un mínimo global.}
-
-  \pendiente
-
-  \item \textbf{Unicidad o infinitos minimizadores.}
-
-  \pendiente
-\end{enumerate}
-\despueslista
-
-\seccion{(b) Reconstrucción}
-
-\begin{enumerate}[label=\roman*., widest=ii]
-  \item \textbf{Implementación.} Reporten $\norm{x_0}_2$, $\max_i \abs{x_{0,i}}$ y $\norm{Ax_0 - b}_2$, muestren lado a lado $b$ y $x_0$, y respondan las preguntas.
-
-  \figura[0.6\linewidth]{P1_b_reconstruccion.png}{Imagen observada $b$ y solución directa $x_0$.}{fig:p1b}
-
-  \pendiente
-
-  \item \textbf{Explicación.}
-
-  \pendiente
-\end{enumerate}
-\despueslista
-
-\seccion{(c) Regularización de Tikhonov}
-
-\begin{enumerate}[label=\roman*., widest=iv]
-  \item \textbf{Gradiente, Hessiana y único minimizador global.}
-
-  \pendiente
-
-  \item \textbf{Descomposición de $\ip{x_\lambda}{v_i}$ y cota del aporte del ruido.}
-
-  \pendiente
-
-  \item \textbf{Interpretación.}
-
-  \pendiente
-
-  \item \textbf{Implementación.} Completen la tabla y comparen las reconstrucciones.
-
-  \begin{table}[H]
-    \centering
-    \begin{tabular}{>{\filatabla}l c c}
-      \toprule[0.8bp]
-                           & $\norm{x}_2$ & $\norm{Ax - b}_2$ \\
-      \midrule[0.4bp]
-      $x_0$                &              &                   \\
-      $\lambda = 10^{-3.5}$ &             &                   \\
-      $\lambda = 10^{-2.5}$ &             &                   \\
-      $\lambda = 1$        &              &                   \\
-      \bottomrule[0.8bp]
-    \end{tabular}
-    \caption{Norma y residuo de cada reconstrucción.}
-    \label{tab:ridge}
-  \end{table}
-
-  \figura{P1_c_tikhonov.png}{Imagen observada $b$, solución directa $x_0$ y reconstrucciones $x_\lambda$ para $\lambda \in \{10^{-3.5}, 10^{-2.5}, 1\}$.}{fig:p1c}
-
-  \pendiente
-\end{enumerate}
-\despueslista
-
-\seccion{(d) Píxeles dañados}
-
-Reconstruyan la imagen a partir de $\tilde{b}$ con $\lambda = 10^{-2.5}$ y muestren lado a lado $\tilde{b}$ y la reconstrucción.
-
-\figura[0.6\linewidth]{P1_d_danados.png}{Observación $\tilde{b}$ con píxeles dañados y su reconstrucción de Tikhonov con $\lambda = 10^{-2.5}$.}{fig:p1d}
-
-\pendiente
-
-\begin{enumerate}[label=\roman*., widest=iii]
-  \item \textbf{$\tilde{\eta} = \eta + (\tilde{b} - b)$ e interpretación de sus sumandos.}
-
-  \pendiente
-
-  \item \textbf{$\norm{\tilde{b} - b}_2$ y comparación de $\norm{\tilde{\eta}}_2$ con $\delta$.}
-
-  \pendiente
-
-  \item \textbf{¿Por qué fracasa la reconstrucción? ¿Bastaría con aumentar $\lambda$?}
-
-  \pendiente
-\end{enumerate}
-\despueslista
-
-\seccion{(Bonus) Mínimos cuadrados ponderados}
-
-\figura[0.6\linewidth]{P1_bonus_ponderados.png}{Reconstrucción de Tikhonov a partir de $\tilde{b}$ y reconstrucción con mínimos cuadrados ponderados.}{fig:p1bonus}
-
-\pendiente
-
-% =====================================================================
-\problema{Red neuronal con dos capas ocultas}
-% =====================================================================
-
 \seccion{(a) Derivada de la sigmoide}
 
 Calculamos la derivada de $\sigma(t)$ usando la regla del cociente:
@@ -189,10 +85,12 @@ Sumando y restando 1 en el numerador, se obtiene:
     = \frac{1}{1 + e^{-t}} \left(1 - \frac{1}{1 + e^{-t}}\right) \\[4pt]
   &= \sigma(t) \, (1 - \sigma(t)).
 \end{align*}
+
 Dado que la función sigmoide se define como:
 \begin{align*}
 \sigma(t) = \frac{1}{1 + e^{-t}}
 \end{align*}
+
 se cumple $e^{-t} > 0$ para todo $t \in \mathbb{R}$, lo cual implica que:
 \begin{align*}
 0 < \sigma(t) < 1, \quad \forall t \in \mathbb{R}
@@ -201,40 +99,115 @@ A partir de $\sigma'(t) = \sigma(t)(1 - \sigma(t))$, deducimos directamente que:
 \begin{align*}
 \sigma'(t) > 0 \quad \forall t \in \mathbb{R}
 \end{align*}
+
 Necesitamos encontrar el valor máximo de $\sigma'(t)$, tal que realizaremos el cambio de variable $u = \sigma(t) \in (0,1)$ y definiremos la función:
 \begin{align*}
 g(u) = u(1 - u) = u - u^2
 \end{align*}
+
 Derivando $g(u)$ con respecto a $u$ e igualando a cero para encontrar sus puntos críticos:
 \begin{align*}
 g'(u) = 1 - 2u = 0 \implies u = \frac{1}{2}
 \end{align*}
+
 Dado que la segunda derivada de $g(u)$ es $g''(u) = -2 < 0$, el punto $u = 1/2$ corresponde a un máximo global en el intervalo $(0,1)$. Evaluando $g(u)$ en este punto:
 \begin{align*}
 g\left(\frac{1}{2}\right) = \frac{1}{2}\left(1 - \frac{1}{2}\right) = \frac{1}{4}
 \end{align*}
+
 Por lo tanto, se concluye que:
 \begin{align*}
 0 < \sigma'(t) \le \frac{1}{4} \quad \forall t \in \mathbb{R}
 \end{align*}
+
+
 Luego, el valor máximo de $\sigma'(t)$ se alcanza cuando $\sigma(t) = \frac{1}{2}$. Resolviendo para $t$:
 \begin{align*}
 \sigma(t) = \frac{1}{1 + e^{-t}} = \frac{1}{2} \implies 1 + e^{-t} = 2 \implies e^{-t} = 1 \implies t = 0
 \end{align*}
+
 Así, la derivada $\sigma'$ alcanza su máximo global en $t = 0$, tal que $\sigma'(0) = \frac{1}{4}$.
 
 \end{align*}
 
 % Falta: deducir que 0 < sigma'(t) <= 1/4 para todo t y en qué punto se alcanza el máximo.
-\pendiente
+
 
 \seccion{(b) Función de pérdida y su gradiente}
+Necesitamos calcular $\nabla_\theta \mathcal{J}(\theta)$, usando el error individual $e_i = \hat{y}_i - y_i$ 
+y siguiendo el camino por el que cada parámetro afecta a $\mathcal{L}_i = \frac{1}{2}e_i^2$ 
+aplicando la regla de la cadena, tenemos:
 
-\pendiente
+\nabla_\theta \mathcal{J}(\theta) 
+= \frac{1}{N} \sum_{i=1}^{N} \nabla_\theta \mathcal{L}_i(\theta)
+= \frac{1}{N} \sum_{i=1}^{N}
+\begin{pmatrix}
+\dfrac{\partial \mathcal{L}_i}{\partial a_1} \\[10pt]
+\dfrac{\partial \mathcal{L}_i}{\partial b_1} \\[10pt]
+\dfrac{\partial \mathcal{L}_i}{\partial a_2} \\[10pt]
+\dfrac{\partial \mathcal{L}_i}{\partial b_2} \\[10pt]
+\dfrac{\partial \mathcal{L}_i}{\partial v}   \\[10pt]
+\dfrac{\partial \mathcal{L}_i}{\partial c}
+\end{pmatrix}
+
+Para cada componente seguimos el camino desde el parámetro hasta $\mathcal{L}_i$:
+
+\begin{align*}
+\frac{\partial \mathcal{L}_i}{\partial c}
+&= \frac{\partial \mathcal{L}_i}{\partial \hat{y}_i}
+   \cdot \frac{\partial \hat{y}_i}{\partial c}
+ = e_i \cdot 1
+ = e_i \\[10pt]
+\frac{\partial \mathcal{L}_i}{\partial v}
+&= \frac{\partial \mathcal{L}_i}{\partial \hat{y}_i}
+   \cdot \frac{\partial \hat{y}_i}{\partial v}
+ = e_i \cdot h_{2,i} \\[10pt]
+\frac{\partial \mathcal{L}_i}{\partial b_2}
+&= \frac{\partial \mathcal{L}_i}{\partial \hat{y}_i}
+   \cdot \frac{\partial \hat{y}_i}{\partial h_{2,i}}
+   \cdot \frac{\partial h_{2,i}}{\partial z_{2,i}}
+   \cdot \frac{\partial z_{2,i}}{\partial b_2}
+ = e_i \cdot v \cdot \sigma'(z_{2,i}) \cdot 1 \\[10pt]
+\frac{\partial \mathcal{L}_i}{\partial a_2}
+&= \frac{\partial \mathcal{L}_i}{\partial \hat{y}_i}
+   \cdot \frac{\partial \hat{y}_i}{\partial h_{2,i}}
+   \cdot \frac{\partial h_{2,i}}{\partial z_{2,i}}
+   \cdot \frac{\partial z_{2,i}}{\partial a_2}
+ = e_i \cdot v \cdot \sigma'(z_{2,i}) \cdot h_{1,i} \\[10pt]
+\frac{\partial \mathcal{L}_i}{\partial b_1}
+&= \frac{\partial \mathcal{L}_i}{\partial \hat{y}_i}
+   \cdot \frac{\partial \hat{y}_i}{\partial h_{2,i}}
+   \cdot \frac{\partial h_{2,i}}{\partial z_{2,i}}
+   \cdot \frac{\partial z_{2,i}}{\partial h_{1,i}}
+   \cdot \frac{\partial h_{1,i}}{\partial z_{1,i}}
+   \cdot \frac{\partial z_{1,i}}{\partial b_1}
+ = e_i \cdot v \cdot \sigma'(z_{2,i}) \cdot a_2 \cdot \sigma'(z_{1,i}) \cdot 1 \\[10pt]
+\frac{\partial \mathcal{L}_i}{\partial a_1}
+&= \frac{\partial \mathcal{L}_i}{\partial \hat{y}_i}
+   \cdot \frac{\partial \hat{y}_i}{\partial h_{2,i}}
+   \cdot \frac{\partial h_{2,i}}{\partial z_{2,i}}
+   \cdot \frac{\partial z_{2,i}}{\partial h_{1,i}}
+   \cdot \frac{\partial h_{1,i}}{\partial z_{1,i}}
+   \cdot \frac{\partial z_{1,i}}{\partial a_1}
+ = e_i \cdot v \cdot \sigma'(z_{2,i}) \cdot a_2 \cdot \sigma'(z_{1,i}) \cdot x_i
+\end{align*}
+Por lo tanto:
+\nabla_\theta \mathcal{J}(\theta)
+= \frac{1}{N} \sum_{i=1}^{N}
+\begin{pmatrix}
+e_i \, v \, \sigma'(z_{2,i}) \, a_2 \, \sigma'(z_{1,i}) \, x_i\\
+e_i \, v \, \sigma'(z_{2,i}) \, a_2 \, \sigma'(z_{1,i})\\
+e_i \, v \, \sigma'(z_{2,i}) \, h_{1,i}\\
+e_i \, v \, \sigma'(z_{2,i})\\
+e_i \, h_{2,i}\\
+e_i
+\end{pmatrix}
+
+
 
 \seccion{(c) Implementación y verificación del gradiente}
 
-Reporten $\theta_0$, $J(\theta_0)$ y el error máximo $E$.
+
 
 \begin{table}[H]
   \centering
@@ -242,33 +215,64 @@ Reporten $\theta_0$, $J(\theta_0)$ y el error máximo $E$.
     \toprule[0.8bp]
     Parámetro & Fórmula de (b) & $D_j$ & Diferencia \\
     \midrule[0.4bp]
-    $a_1$ & & & \\
-    $b_1$ & & & \\
-    $a_2$ & & & \\
-    $b_2$ & & & \\
-    $v$   & & & \\
-    $c$   & & & \\
+    $a_1$ & $3{,}17 \times 10^{-4}$ & $3{,}17 \times 10^{-4}$ & $2{,}72 \times 10^{-12}$ \\
+    $b_1$ & $-1{,}23 \times 10^{-3}$ & $-1{,}23 \times 10^{-3}$ & $1{,}31 \times 10^{-11}$ \\
+    $a_2$ & $-2{,}83 \times 10^{-3}$ & $-2{,}83 \times 10^{-3}$ & $1{,}74 \times 10^{-11}$ \\
+    $b_2$ & $-9{,}49 \times 10^{-3}$ & $-9{,}49 \times 10^{-3}$ & $1{,}38 \times 10^{-11}$ \\
+    $v$   & $-5{,}95 \times 10^{-1}$ & $-5{,}95 \times 10^{-1}$ & $8{,}97 \times 10^{-12}$ \\
+    $c$   & $-1{,}58$                & $-1{,}58$                & $2{,}79 \times 10^{-12}$ \\
     \bottomrule[0.8bp]
   \end{tabular}
   \caption{Gradiente en $\theta_0$: fórmulas de (b) y diferencias centradas.}
   \label{tab:gradiente}
 \end{table}
+* -1.58 se obtuvo como -1.58e+00 pero se decidió anotar así en vez de $-1{,}58 \times 10^{0}$
 
-\pendiente
+
+
+El vector inicial es
+
+\[
+
+  \theta_0 = (0{,}912;\ {-0{,}585};\ 0{,}657;\ {-0{,}701};\ 0{,}026;\ {-0{,}728}),
+
+  \qquad J(\theta_0) = 1{,}6229.
+\]
+
+El error máximo entre el gradiente obtenido y las diferencias centradas es
+
+$E = 1{,}74 \times 10^{-11} 
 
 \seccion{(d) Descenso del gradiente}
 
 \figura[0.7\linewidth]{P2_d_error.png}{Evolución de $J(\theta_k)$ con $\alpha = 1$.}{fig:p2d}
 
-\pendiente
+La Figura 5 muestra $J(\theta_k)$ en escala logarítmica. La pérdida cae rápidamente durante las primeras (aproximadamente) 2000 iteraciones y luego se estabiliza gradualmente, luego de estas iteraciones la curva se vuelve casi lineal, convergiendo a un valor minimo de costo constante.
+
+
+
+
 
 \seccion{(e) Parámetros encontrados}
 
-Reporten $\theta_{20.000}$ y $J(\theta_{20.000})$.
 
 \figura[0.7\linewidth]{P2_e_ajuste.png}{Datos de entrenamiento y curva $x \mapsto \hat{y}(x; \theta_{20.000})$ en $[-1, 1]$.}{fig:p2e}
 
-\pendiente
+Tras 20\,000 iteraciones con $\alpha = 1$ se obtiene
+
+\[
+
+  \theta_{20000} = (4{,}623;\ 0{,}718;\ 4{,}394;\ {-0{,}990};\ {-3{,}178};\ 3{,}086),
+
+  \qquad J(\theta_{20000}) = 1{,}395 \times 10^{-3}.
+
+\]
+
+Como se observa en la Figura 6, la curva $x \mapsto \hat{y}(x;\theta_{20000})$ ajusta bien los datos, siguiendo una forma decreciente que va desde aproximadamente $y = 2.1$, hasta aproximadamente $y = 0$.
+
+
+
+
 
 \seccion{(f) Sensibilidad del entrenamiento}
 
@@ -277,13 +281,32 @@ Reporten $\theta_{20.000}$ y $J(\theta_{20.000})$.
 
   \figura[0.7\linewidth]{P2_f_pasos.png}{Curvas de error para $\alpha \in \{0{,}01;\ 0{,}1;\ 1;\ 2{,}5\}$, partiendo del mismo $\theta_0$.}{fig:p2fi}
 
-  \pendiente
+  Los valores finales de $J$ para cada paso son:
+
+  \begin{itemize}
+
+    \item $\alpha = 0{,}01$: $J_{20000} = 0{,}1265$. El paso es demasiado pequeño, entonces el algoritmo converge muy lentamente y en 20000 iteraciones no alcanza un mínimo de calidad comparable.
+
+    \item $\alpha = 0{,}1$: $J_{20000} = 1{,}404 \times 10^{-3}$. Converge bien aunque más lento que $\alpha=1$.
+
+    \item $\alpha = 1$: $J_{20000} = 1{,}395 \times 10^{-3}$. Es el paso más eficiente, dado que converge rápido y alcanza el menor valor de $J$.
+
+    \item $\alpha = 2{,}5$: $J$ deja de ser finito en la iteración $k = 8$. El paso es demasiado grande y en cada actualización los parámetros crecen de manera descontrolada hasta que rapidamente ocurre desbordamiento numérico (\textit{overflow}).
+
+  \end{itemize}
+
+  En resumen, un paso muy pequeño ralentiza la convergencia, mientras que un paso excesivamente grande provoca divergencia. El valor $\alpha = 1$ resulta el más adecuado para este problema.
+
+
+
 
   \item \textbf{Distintas inicializaciones.}
 
   \figura[0.8\linewidth]{P2_f_inicializaciones.png}{Valores finales de $J$ para 10 inicializaciones con componentes en $[-1, 1]$ y 10 con componentes en $[-5, 5]$.}{fig:p2fii}
 
-  \pendiente
+Con inicializaciones en $[-1,1]$, las 10 inicializaciones obtienen valores de $J$ finales parecidos, lo que sugiere que el descenso del gradiente encuentra consistentenmente un buen minimo sin importar el punto de partida. En cambio en $[-5,5]$, algunas inicializaciones quedan atascadas y terminan con valores de $J$ ligeramente superiores al resto. Esto puede deberse a que cuando los parametros iniciales son muy grandes en valor absoluto, los gradientes son casi cero desde el inicio ($\sigma'(t)\approx0$ cuando $\abs{t}$ es grande), por lo que el algrotitmo logra moverse muy poco apenas con cada iteración, y no logran alejarse del punto de partida desfavorable.
+Esto también demuestra que el descenso del gradiente no garantiza encontrar el mínimo global, dado que dependiendo del punto de partida, se puede terminar llegando a un minimo local o a una zona plana de la cual es dificil desestancarse.
+
 \end{enumerate}
 \despueslista
 
@@ -294,11 +317,30 @@ Reporten $\theta_{20.000}$ y $J(\theta_{20.000})$.
 
   \figura[0.7\linewidth]{P2_g_ajuste.png}{Datos $(x_i, \tilde{y}_i)$ y curva obtenida con la misma red.}{fig:p2g}
 
-  \pendiente
+Entrenando con \texttt{datos\_P2\_g.csv} desde el mismo $\theta_0$ con $\alpha=1$ y 20000 iteraciones se obtiene $J = 7{,}822\times10^{-2}$, valor considerablemente mayor que el $1{,}395\times10^{-3}$ alcanzado con los datos originales. Como muestra la Figura 9, la curva ajustada no logra seguir la forma de los datos $\tilde{y}_i$. Esto se explica en el item siguiente.
+
 
   \item \textbf{Monotonía, cotas y por qué la red no puede aproximar $\tilde{f}$.}
+  
+Calculamos la derivada de $\hat{y}(x; \theta)$ respecto de $x$ aplicando la regla de la cadena:
+\[
+\frac{d\hat{y}}{dx} = v \cdot \sigma'(z_2) \cdot a_2 \cdot \sigma'(z_1) \cdot a_1
+\]
 
-  \pendiente
+Como $\sigma'(t) > 0$ para todo $t \in \mathbb{R}$, el signo de $d\hat{y}/dx$ coincide con el de $v \cdot a_1 \cdot a_2$, el cual es constante respecto a $x$. Por tanto, $x \mapsto \hat{y}(x; \theta)$ es una función \textbf{monótona} en $\mathbb{R}$ para cualquier $\theta \in \mathbb{R}^6$ (siendo estrictamente monótona si $v \cdot a_1 \cdot a_2 \neq 0$).
+
+Respecto a las cotas, como $0 < \sigma(t) < 1$ para todo $t \in \mathbb{R}$, se tiene que $0 < h_2 < 1$ y por lo tanto:
+\[
+\hat{y}(x; \theta) = c + v h_2 \in 
+\begin{cases} 
+(c, c + v) & \text{si } v > 0, \\
+(c + v, c) & \text{si } v < 0, \\
+\{c\} & \text{si } v = 0.
+\end{cases}
+\]
+Es decir, los valores de $\hat{y}$ están siempre acotados estrictamente entre $c$ y $c + v$.
+\\Observando los datos de \texttt{datos\_P2\_g.csv}, la función $\tilde{f}$ no es monótona, ya que aumenta para $x < 0$ y disminuye para $x > 0$. Dado que toda función representable por esta red es monótona, no existe ningún $\theta \in \mathbb{R}^6$ con el que la red pueda aproximar bien a $\tilde{f}$, sin importar la cantidad de iteraciones, $\alpha$ utilizado, ni la inicialización elegida. La red de una sola neurona por capa oculta restringe el espacio de funciones representables únicamente a las funciones monótonas.
+
 \end{enumerate}
 
 % =====================================================================
