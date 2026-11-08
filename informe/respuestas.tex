@@ -66,6 +66,110 @@ Algunas recomendaciones
 \problema{Reconstrucción de una imagen}
 % =====================================================================
 
+\seccion{(a) Mínimos cuadrados}
+
+\begin{enumerate}[label=\roman*., widest=iii]
+  \item \textbf{Gradiente y matriz Hessiana de $J_0$.}
+
+  \pendiente
+
+  \item \textbf{$H_{J_0}$ es semidefinida positiva y todo punto crítico es un mínimo global.}
+
+  \pendiente
+
+  \item \textbf{Unicidad o infinitos minimizadores.}
+
+  \pendiente
+\end{enumerate}
+\despueslista
+
+\seccion{(b) Reconstrucción}
+
+\begin{enumerate}[label=\roman*., widest=ii]
+  \item \textbf{Implementación.} Reporten $\norm{x_0}_2$, $\max_i \abs{x_{0,i}}$ y $\norm{Ax_0 - b}_2$, muestren lado a lado $b$ y $x_0$, y respondan las preguntas.
+
+  \figura[0.6\linewidth]{P1_b_reconstruccion.png}{Imagen observada $b$ y solución directa $x_0$.}{fig:p1b}
+
+  \pendiente
+
+  \item \textbf{Explicación.}
+
+  \pendiente
+\end{enumerate}
+\despueslista
+
+\seccion{(c) Regularización de Tikhonov}
+
+\begin{enumerate}[label=\roman*., widest=iv]
+  \item \textbf{Gradiente, Hessiana y único minimizador global.}
+
+  \pendiente
+
+  \item \textbf{Descomposición de $\ip{x_\lambda}{v_i}$ y cota del aporte del ruido.}
+
+  \pendiente
+
+  \item \textbf{Interpretación.}
+
+  \pendiente
+
+  \item \textbf{Implementación.} Completen la tabla y comparen las reconstrucciones.
+
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{>{\filatabla}l c c}
+      \toprule[0.8bp]
+                           & $\norm{x}_2$ & $\norm{Ax - b}_2$ \\
+      \midrule[0.4bp]
+      $x_0$                &              &                   \\
+      $\lambda = 10^{-3.5}$ &             &                   \\
+      $\lambda = 10^{-2.5}$ &             &                   \\
+      $\lambda = 1$        &              &                   \\
+      \bottomrule[0.8bp]
+    \end{tabular}
+    \caption{Norma y residuo de cada reconstrucción.}
+    \label{tab:ridge}
+  \end{table}
+
+  \figura{P1_c_tikhonov.png}{Imagen observada $b$, solución directa $x_0$ y reconstrucciones $x_\lambda$ para $\lambda \in \{10^{-3.5}, 10^{-2.5}, 1\}$.}{fig:p1c}
+
+  \pendiente
+\end{enumerate}
+\despueslista
+
+\seccion{(d) Píxeles dañados}
+
+Reconstruyan la imagen a partir de $\tilde{b}$ con $\lambda = 10^{-2.5}$ y muestren lado a lado $\tilde{b}$ y la reconstrucción.
+
+\figura[0.6\linewidth]{P1_d_danados.png}{Observación $\tilde{b}$ con píxeles dañados y su reconstrucción de Tikhonov con $\lambda = 10^{-2.5}$.}{fig:p1d}
+
+\pendiente
+
+\begin{enumerate}[label=\roman*., widest=iii]
+  \item \textbf{$\tilde{\eta} = \eta + (\tilde{b} - b)$ e interpretación de sus sumandos.}
+
+  \pendiente
+
+  \item \textbf{$\norm{\tilde{b} - b}_2$ y comparación de $\norm{\tilde{\eta}}_2$ con $\delta$.}
+
+  \pendiente
+
+  \item \textbf{¿Por qué fracasa la reconstrucción? ¿Bastaría con aumentar $\lambda$?}
+
+  \pendiente
+\end{enumerate}
+\despueslista
+
+\seccion{(Bonus) Mínimos cuadrados ponderados}
+
+\figura[0.6\linewidth]{P1_bonus_ponderados.png}{Reconstrucción de Tikhonov a partir de $\tilde{b}$ y reconstrucción con mínimos cuadrados ponderados.}{fig:p1bonus}
+
+\pendiente
+
+% =====================================================================
+\problema{Red neuronal con dos capas ocultas}
+% =====================================================================
+
 \seccion{(a) Derivada de la sigmoide}
 
 Calculamos la derivada de $\sigma(t)$ usando la regla del cociente:
