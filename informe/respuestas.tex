@@ -103,17 +103,60 @@ Algunas recomendaciones
 \begin{enumerate}[label=\roman*., widest=iv]
   \item \textbf{Gradiente, Hessiana y único minimizador global.}
 
-  \pendiente
+  Expandiendo la norma,
+  \[
+    J_\lambda(x) = x^T A^T A x - 2 (A^T b)^T x + b^T b + \lambda x^T x,
+  \]
+  y derivando se obtiene
+  \[
+    \nabla J_\lambda(x) = 2A^T(Ax - b) + 2\lambda x, \qquad H_{J_\lambda} = 2(A^T A + \lambda I).
+  \]
+  Para cada vector propio $v_i$ de $A^T A$ se tiene $H_{J_\lambda} v_i = 2(\mu_i + \lambda) v_i$. Como $v_1, \dots, v_n$ es una base ortonormal de $\R^n$, los valores propios de $H_{J_\lambda}$ son exactamente $2(\mu_i + \lambda)$. Además,
+  \[
+    \mu_i = v_i^T A^T A v_i = \norm{Av_i}_2^2 \geq 0,
+  \]
+  por lo que $2(\mu_i + \lambda) \geq 2\lambda > 0$ y $H_{J_\lambda}$ es definida positiva.
+
+  La matriz $A^T A + \lambda I$ tiene valores propios $\mu_i + \lambda > 0$, luego es invertible y la ecuación $\nabla J_\lambda(x) = 0$, es decir $(A^T A + \lambda I)x = A^T b$, tiene como única solución
+  \[
+    x_\lambda = (A^T A + \lambda I)^{-1} A^T b.
+  \]
+  Como $J_\lambda$ es un polinomio de grado 2, su aproximación de Taylor de segundo orden es exacta. Usando $\nabla J_\lambda(x_\lambda) = 0$ y que $H_{J_\lambda}$ es definida positiva, para todo $y \neq x_\lambda$ resulta
+  \[
+    J_\lambda(y) - J_\lambda(x_\lambda) = \tfrac{1}{2}(y - x_\lambda)^T H_{J_\lambda} (y - x_\lambda) > 0.
+  \]
+  Por lo tanto, $x_\lambda$ es el único minimizador global de $J_\lambda$.
 
   \item \textbf{Descomposición de $\ip{x_\lambda}{v_i}$ y cota del aporte del ruido.}
 
-  \pendiente
+  Tomamos producto interno con $v_i$ en $(A^T A + \lambda I) x_\lambda = A^T b$. Como $A^T A + \lambda I$ es simétrica y $v_i$ es vector propio,
+  \[
+    (\mu_i + \lambda)\ip{x_\lambda}{v_i} = \ip{A^T b}{v_i} = \ip{b}{Av_i},
+  \]
+  donde la última igualdad usa que $\ip{u}{w} = u^T w$ y que $(A^T b)^T = b^T A$. Reemplazando $b = Ax^* + \eta$ y usando $\ip{Ax^*}{Av_i} = \ip{x^*}{A^T A v_i} = \mu_i \ip{x^*}{v_i}$, se obtiene
+  \[
+    \ip{x_\lambda}{v_i} = \frac{\mu_i}{\mu_i + \lambda}\ip{x^*}{v_i} + \frac{\ip{Av_i}{\eta}}{\mu_i + \lambda}.
+  \]
+  Para la cota usamos Cauchy-Schwarz y $\norm{Av_i}_2 = \sqrt{\mu_i}$:
+  \[
+    \abs*{\frac{\ip{Av_i}{\eta}}{\mu_i + \lambda}} \leq \frac{\sqrt{\mu_i}}{\mu_i + \lambda}\norm{\eta}_2 \leq \frac{\norm{\eta}_2}{2\sqrt{\lambda}},
+  \]
+  donde la última desigualdad es la indicación $\mu_i + \lambda \geq 2\sqrt{\mu_i \lambda}$ si $\mu_i > 0$, y es inmediata si $\mu_i = 0$.
+
+  Los números $\ip{x_\lambda}{v_i}$ son las coordenadas de $x_\lambda$ en la base $v_1, \dots, v_n$. El primer término depende solo de la imagen verdadera: es la coordenada $\ip{x^*}{v_i}$ multiplicada por el factor $\mu_i/(\mu_i + \lambda) \in [0, 1)$, y es lo único que quedaría si no hubiera ruido. El segundo depende solo de $\eta$ y no de $x^*$, por lo que es el aporte del ruido. A diferencia de (b), donde el error en la dirección $v_i$ solo se podía acotar por $\norm{\eta}_2/\sqrt{\mu_i}$, que explota cuando $\mu_i \to 0$, ahora la cota no depende de $\mu_i$.
 
   \item \textbf{Interpretación.}
 
-  \pendiente
+  El comportamiento lo determina el factor $\mu_i/(\mu_i + \lambda)$:
+  \begin{itemize}
+    \item Si $\mu_i \gg \lambda$, el factor es cercano a 1 y $\ip{x_\lambda}{v_i} \approx \ip{x^*}{v_i} + \ip{Av_i}{\eta}/\mu_i$. La componente de $x^*$ se recupera casi intacta y el error, acotado por $\norm{\eta}_2/\sqrt{\mu_i}$, es pequeño porque $\mu_i$ es grande.
+    \item Si $\mu_i \ll \lambda$, el factor es cercano a 0. La componente de $x^*$ se pierde, pero el aporte del ruido también se atenúa, pues está acotado por $\sqrt{\mu_i}\norm{\eta}_2/\lambda$.
+  \end{itemize}
+  Así, $\lambda$ actúa como un umbral: se conservan las direcciones que el desenfoque preserva y se descartan aquellas en las que el ruido dominaría.
 
-  \item \textbf{Implementación.} Completen la tabla y comparen las reconstrucciones.
+  Si $\lambda$ es muy pequeño, casi todos los factores valen 1 y $x_\lambda$ se aproxima a $x_0$, con el ruido amplificado en las direcciones de $\mu_i$ pequeño. Si $\lambda$ es muy grande, todos los factores se acercan a 0, por lo que $x_\lambda \to 0$: el ruido desaparece, pero también la imagen, que resulta borrosa y oscura, y el residuo tiende a $\norm{b}_2$.
+
+  \item \textbf{Implementación.} Los valores se obtienen en la celda de (c) iv del notebook.
 
   \begin{table}[H]
     \centering
@@ -121,10 +164,10 @@ Algunas recomendaciones
       \toprule[0.8bp]
                            & $\norm{x}_2$ & $\norm{Ax - b}_2$ \\
       \midrule[0.4bp]
-      $x_0$                &              &                   \\
-      $\lambda = 10^{-3.5}$ &             &                   \\
-      $\lambda = 10^{-2.5}$ &             &                   \\
-      $\lambda = 1$        &              &                   \\
+      $x_0$                & $3{,}503 \times 10^{5}$ & $6{,}71 \times 10^{-12}$ \\
+      $\lambda = 10^{-3.5}$ & $37{,}06$ & $0{,}5617$ \\
+      $\lambda = 10^{-2.5}$ & $36{,}02$ & $0{,}6169$ \\
+      $\lambda = 1$        & $17{,}18$ & $17{,}85$ \\
       \bottomrule[0.8bp]
     \end{tabular}
     \caption{Norma y residuo de cada reconstrucción.}
@@ -133,30 +176,75 @@ Algunas recomendaciones
 
   \figura{P1_c_tikhonov.png}{Imagen observada $b$, solución directa $x_0$ y reconstrucciones $x_\lambda$ para $\lambda \in \{10^{-3.5}, 10^{-2.5}, 1\}$.}{fig:p1c}
 
-  \pendiente
+  Como no tiene sentido ajustar $b$ mejor que el tamaño del ruido, comparamos cada residuo con $\delta = 0{,}64$:
+  \begin{itemize}
+    \item $x_0$: el residuo es $6{,}71 \times 10^{-12} \ll \delta$, es decir, $x_0$ ajusta también el ruido. Su norma, $3{,}503 \times 10^{5}$, es muy superior al máximo posible de 64 y la imagen no contiene información reconocible.
+    \item $\lambda = 10^{-3.5}$: el residuo es $0{,}5617 \approx 0{,}88\,\delta$. La norma ya es razonable y aparece la estructura de la imagen, pero con mucho grano: las direcciones con $\mu_i$ cercano a $\lambda$ siguen dejando pasar ruido, y la cota de (c) ii vale $\delta/(2\sqrt{\lambda}) \approx 18{,}0$. Además, $\max_i \abs{x_i} = 1{,}178$ se sale del intervalo $[0, 1]$.
+    \item $\lambda = 10^{-2.5}$: el residuo es $0{,}6169 \approx 0{,}96\,\delta$, el más cercano a $\delta$. La cota del ruido baja a $\approx 5{,}69$, los valores se mantienen en el rango ($\max_i \abs{x_i} = 0{,}9618$) y la imagen se ve nítida y con poco grano.
+    \item $\lambda = 1$: el residuo es $17{,}85 \approx 27{,}9\,\delta$, muy superior al ruido, por lo que se está regularizando de más. Como $\norm{Ax}_2 \leq \norm{x}_2$, se tiene $\mu_i = \norm{Av_i}_2^2 \leq 1$, y entonces todos los factores cumplen $\mu_i/(\mu_i + 1) \leq 1/2$: incluso las componentes mejor conservadas se reducen a la mitad o menos. Esto explica que la imagen resulte borrosa y oscura, con $\max_i \abs{x_i} = 0{,}4171$.
+  \end{itemize}
+  La mejor reconstrucción de las tres es la de $\lambda = 10^{-2.5}$, que equilibra la imagen recuperada con el ruido admitido, tal como predicen (c) ii y iii.
 \end{enumerate}
 \despueslista
 
 \seccion{(d) Píxeles dañados}
 
-Reconstruyan la imagen a partir de $\tilde{b}$ con $\lambda = 10^{-2.5}$ y muestren lado a lado $\tilde{b}$ y la reconstrucción.
+Sea $\tilde{x}_\lambda = (A^T A + \lambda I)^{-1} A^T \tilde{b}$ la reconstrucción de Tikhonov a partir de $\tilde{b}$.
 
 \figura[0.6\linewidth]{P1_d_danados.png}{Observación $\tilde{b}$ con píxeles dañados y su reconstrucción de Tikhonov con $\lambda = 10^{-2.5}$.}{fig:p1d}
 
-\pendiente
+Con $\lambda = 10^{-2.5}$, la reconstrucción no muestra ninguna estructura reconocible: se obtiene $\norm{\tilde{x}_\lambda}_2 = 45{,}91$, $\max_i \abs{\tilde{x}_{\lambda,i}} = 2{,}395$, fuera del intervalo $[0, 1]$, y $\norm{A\tilde{x}_\lambda - \tilde{b}}_2 \approx 10$.
 
 \begin{enumerate}[label=\roman*., widest=iii]
   \item \textbf{$\tilde{\eta} = \eta + (\tilde{b} - b)$ e interpretación de sus sumandos.}
 
-  \pendiente
+  De $\tilde{b} = Ax^* + \tilde{\eta}$ y $Ax^* = b - \eta$ se obtiene
+  \[
+    \tilde{\eta} = \tilde{b} - Ax^* = \tilde{b} - b + \eta = \eta + (\tilde{b} - b).
+  \]
+  El sumando $\eta$ es el ruido habitual del sensor: pequeño y repartido en todos los píxeles, con $\norm{\eta}_2 \approx \delta$. El sumando $\tilde{b} - b$ es el error causado por los píxeles dañados: vale cero en los píxeles sanos y, en los dañados, es la diferencia entre la lectura correcta y el valor 0 o 1 que quedó registrado.
 
   \item \textbf{$\norm{\tilde{b} - b}_2$ y comparación de $\norm{\tilde{\eta}}_2$ con $\delta$.}
 
-  \pendiente
+  En los datos, 430 de los 4096 píxeles (10,5\,\%) valen exactamente 0 o 1, y en todos los demás $\tilde{b}$ coincide con $b$. Se obtiene
+  \[
+    \norm{\tilde{b} - b}_2 = 10{,}74,
+  \]
+  con diferencias de hasta $0{,}8225$ en un píxel. Como $\eta$ no se conoce, $\norm{\tilde{\eta}}_2$ no se puede calcular de forma exacta, pero la desigualdad triangular aplicada a $\tilde{\eta} = \eta + (\tilde{b} - b)$ y a $\tilde{b} - b = \tilde{\eta} - \eta$, junto con $\norm{\eta}_2 \approx \delta$, entrega
+  \[
+    10{,}10 \lesssim \norm{\tilde{\eta}}_2 \lesssim 11{,}38.
+  \]
+  Es decir, $\norm{\tilde{\eta}}_2$ es entre 16 y 18 veces mayor que $\delta = 0{,}64$. El nuevo ruido está dominado por los píxeles dañados.
 
   \item \textbf{¿Por qué fracasa la reconstrucción? ¿Bastaría con aumentar $\lambda$?}
 
-  \pendiente
+  La deducción de (c) ii solo usa que $\tilde{b} = Ax^* + \tilde{\eta}$, de modo que
+  \[
+    \ip{\tilde{x}_\lambda}{v_i} = \frac{\mu_i}{\mu_i + \lambda}\ip{x^*}{v_i} + \frac{\ip{Av_i}{\tilde{\eta}}}{\mu_i + \lambda}, \qquad \abs*{\frac{\ip{Av_i}{\tilde{\eta}}}{\mu_i + \lambda}} \leq \frac{\norm{\tilde{\eta}}_2}{2\sqrt{\lambda}}.
+  \]
+  Con $\lambda = 10^{-2.5}$ la cota pasa de $\approx 5{,}69$ a un valor entre $90$ y $101$. El valor de $\lambda$ que funcionaba para un ruido de tamaño $\delta$ ya no controla un ruido unas 17 veces mayor, y el segundo término pasa a dominar sobre la imagen. Además, $J_\lambda$ trata todas las lecturas por igual, por lo que no tiene forma de distinguir las lecturas erróneas de las correctas.
+
+  Aumentar $\lambda$ no basta. Para que la cota vuelva a su valor anterior habría que multiplicar $\lambda$ por $(\norm{\tilde{\eta}}_2/\delta)^2 \approx 280$, es decir, llegar a $\lambda \approx 0{,}9$. Eso es prácticamente el caso $\lambda = 1$ de (c) iv, en el que ningún factor $\mu_i/(\mu_i + \lambda)$ supera $1/2$ y la imagen queda borrosa y oscura.
+
+  Como $x^*$ no se conoce, en la Tabla~\ref{tab:danados} usamos como referencia $x_\lambda$ con $\lambda = 10^{-2.5}$, obtenida desde $b$ en (c) iv. Aumentar $\lambda$ ayuda solo hasta cierto punto: la distancia a la referencia baja de $28{,}5$ a $8{,}45$ en $\lambda = 10^{-1.5}$, cuyo residuo, $10{,}35$, ya es del orden de $\norm{\tilde{\eta}}_2$. Pero esa imagen conserva manchas producidas por los píxeles dañados (Figura~\ref{fig:p1dlambda}). Al seguir aumentando $\lambda$ las manchas se atenúan, pero la distancia vuelve a crecer y la imagen pierde detalle y brillo. Ningún valor de $\lambda$ probado se acerca a la calidad obtenida sin píxeles dañados, porque $\lambda$ reduce el ruido y la imagen al mismo tiempo.
+
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{>{\filatabla}l c c c}
+      \toprule[0.8bp]
+      & $\norm{\tilde{x}_\lambda}_2$ & $\norm{\tilde{x}_\lambda - x_{10^{-2.5}}}_2$ & $\norm{A\tilde{x}_\lambda - \tilde{b}}_2$ \\
+      \midrule[0.4bp]
+      $\lambda = 10^{-2.5}$ & $45{,}91$ & $28{,}5$ & $10{,}0$ \\
+      $\lambda = 10^{-1.5}$ & $35{,}61$ & $8{,}45$ & $10{,}35$ \\
+      $\lambda = 10^{-0.5}$ & $26{,}61$ & $10{,}46$ & $13{,}73$ \\
+      $\lambda = 1$         & $17{,}16$ & $19{,}3$ & $20{,}73$ \\
+      \bottomrule[0.8bp]
+    \end{tabular}
+    \caption{Reconstrucciones desde $\tilde{b}$ al aumentar $\lambda$, comparadas con $x_{10^{-2.5}}$, obtenida desde $b$.}
+    \label{tab:danados}
+  \end{table}
+
+  \figura{P1_d_lambda.png}{Referencia obtenida desde $b$ y reconstrucciones desde $\tilde{b}$ para valores crecientes de $\lambda$.}{fig:p1dlambda}
 \end{enumerate}
 \despueslista
 
